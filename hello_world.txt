@@ -1,0 +1,5 @@
+The difference between MPI_SEND and MPI_SSEND is that the latter will always wait until the receive has been posted on the receiving end. Even if the message is small and can be buffered internally, it will still wait until the message has started to be received on the other side.
+
+MPI_SSEND is a way of ensuring that both processes have reached a certain point in their execution without having to do an MPI_BARRIER, for instance. If your application is sending and receiving to and from the same rank, it's not safe to do either MPI_SEND OR MPI_SSEND, as either one could block indefinitely.
+
+The experiment conducted in hello_worldSend.c and hello_worldSsend.c verifies the above stated points clearly.

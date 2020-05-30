@@ -1,0 +1,33 @@
+#include<omp.h>
+#include<stdio.h>
+#include<time.h>
+int main()
+{
+	omp_set_num_threads(100);
+	static long num_steps=10000000;
+	int i; 
+	double x, pi=0.0;
+	double step = 1.0/(double) num_steps;
+	 clock_t start, end; 
+	 start= clock();
+		 
+	 #pragma omp for
+	 for (i=0;i< num_steps; i++){
+	 	 double x0,x1;
+		 x0 = (i)*step;
+		 x1 = (i+1)*step;
+		 double temp=step*0.5*(4.0/(1.0+x0*x0)+4.0/(1.0+x1*x1));
+		 
+		 #pragma omp critical
+		 {
+		 pi += temp;
+		 }
+	 }
+	 end=clock();
+	 //printf("%f",pi);
+	 double t =(end - start) ;
+	 double cts=CLOCKS_PER_SEC;
+	 t=t/cts;
+	 printf("%f",t);
+}
+
